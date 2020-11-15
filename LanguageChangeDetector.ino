@@ -1,4 +1,5 @@
 char inChar;
+char status;
 
 void setup() {
   pinMode(2, OUTPUT);
@@ -7,26 +8,38 @@ void setup() {
 }
 
 void loop() {
-  if (inChar == 'e')
-  {
-    digitalWrite(2, HIGH);
-    digitalWrite(13, LOW);
-  }
-  else if (inChar == 'h')
-  {
-    digitalWrite(2, LOW);
-    digitalWrite(13, HIGH);
-  }
-  else if (inChar == 'z')
-  {
-    Serial.println("ok");
-  }
-}
-
-
-void serialEvent() {
   while (Serial.available()) {
     // get the new byte:
     inChar = (char)Serial.read();
+    if (inChar == 'e' || inChar == 'h' || inChar == 'j' )
+    {
+      status = inChar;
+    }
+    else if (inChar == 'z')
+    {
+      Serial.println("ok");
+    }
   }
+
+  switch (status)
+  {
+    case 'e':
+      digitalWrite(2, HIGH);
+      digitalWrite(13, LOW);
+      break;
+    case 'j':
+      digitalWrite(2, LOW);
+      digitalWrite(13, HIGH);
+      delay(500);
+      digitalWrite(13, LOW);
+      delay(500);
+      break;
+    case 'h':
+      digitalWrite(2, LOW);
+      digitalWrite(13, HIGH);
+      break;
+    default:
+      break;
+  }
+
 }
