@@ -7,8 +7,10 @@ const int HebrewLED = 4;    // Hebrew LED pin #
 const int EnglishLED = 13;   // English LED pin #
 
 const int blinkDelay = 500; //delay between LED on/off state
+const int bounceThreshold = 250; //the threshold time in ms of the button bounce prevent logics
 
 bool isBlink = false; //a flag for blink state (if true, the Hebrew LED will blink)
+
 
 void setup() {
   //set pins mode: LEDs are outputs, buttons are input
@@ -74,7 +76,7 @@ void SelectHebrew()
   static unsigned long last_ToggleModeInterrupt_time = 0;
   unsigned long toggleModeInterrupt_time = millis();
   // If interrupts come faster than 500ms, assume it's a bounce and ignore
-  if (toggleModeInterrupt_time - last_ToggleModeInterrupt_time > 500)
+  if (toggleModeInterrupt_time - last_ToggleModeInterrupt_time > bounceThreshold)
   {
     command = "";
     Serial.println("he-IL");
@@ -86,7 +88,7 @@ void SelectEnglish()
   static unsigned long last_ToggleModeInterrupt_time = 0;
   unsigned long toggleModeInterrupt_time = millis();
   // If interrupts come faster than 500ms, assume it's a bounce and ignore
-  if (toggleModeInterrupt_time - last_ToggleModeInterrupt_time > 500)
+  if (toggleModeInterrupt_time - last_ToggleModeInterrupt_time > bounceThreshold)
   {
     command = "";
     Serial.println("en-US");
